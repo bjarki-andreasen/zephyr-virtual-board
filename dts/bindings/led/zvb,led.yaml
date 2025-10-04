@@ -1,0 +1,21 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board LED
+
+  Example:
+
+    zvb {
+            compatible = "zvb,zvb-bus";
+
+            led0: led@0 {
+                    compatible = "zvb,led";
+                    reg = <0>;
+            };
+    };
+
+compatible: zvb,led
+
+include:
+  - zvb-bus-device.yaml

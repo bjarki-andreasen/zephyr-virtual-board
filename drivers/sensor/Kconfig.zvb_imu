@@ -1,0 +1,10 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config SENSOR_ZVB_IMU
+	bool "ZVB Zephyr Virtual IMU device driver"
+	default y
+	depends on DT_HAS_ZVB_IMU_ENABLED
+	select ZVB_BUS
+	select RTIO
+	depends on SENSOR_ASYNC_API

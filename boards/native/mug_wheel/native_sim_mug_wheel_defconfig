@@ -1,0 +1,20 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+CONFIG_CONSOLE=y
+CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC=1000000
+CONFIG_NATIVE_SIM_SLOWDOWN_TO_REAL_TIME=y
+
+# This should technically be in a snippet,
+# but it is pretty essential to this board
+# working, so we place it here for
+# convenience.
+CONFIG_NET_NATIVE_OFFLOADED_SOCKETS=y
+CONFIG_NET_SOCKETS_OFFLOAD=y
+CONFIG_NET_DRIVERS=y
+CONFIG_ETH_DRIVER=n
+CONFIG_HEAP_MEM_POOL_SIZE=8192
+CONFIG_NETWORKING=y
+CONFIG_NET_IPV4=y
+CONFIG_NET_UDP=y
+CONFIG_NET_SOCKETS=y

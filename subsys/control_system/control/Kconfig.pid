@@ -1,0 +1,6 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config CONTROL_SYSTEM_CONTROL_PID
+	bool "PID control system control support"
+	depends on DSP

@@ -1,0 +1,22 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board Sensor
+
+  Example:
+
+    zvb {
+            compatible = "zvb,zvb-bus";
+
+            sensor0: sensor@0 {
+                    reg = <0>;
+                    compatible = "zvb,sensor";
+            };
+    };
+
+compatible: zvb,sensor
+
+include:
+  - sensor-device.yaml
+  - zvb-bus-device.yaml

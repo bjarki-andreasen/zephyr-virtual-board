@@ -1,0 +1,87 @@
+/*
+ * Copyright 2025 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+#include <posix/posix.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+	model = "Zephyr Virtual Board";
+	compatible = "zephyr,posix";
+
+	chosen {
+		zephyr,console = &uart0;
+		zephyr,shell-uart = &uart0;
+		zephyr,entropy = &rng;
+	};
+
+	rng: rng {
+		status = "okay";
+		compatible = "zephyr,native-sim-rng";
+	};
+
+	uart0: uart {
+		status = "okay";
+		compatible = "zephyr,native-pty-uart";
+		current-speed = <0>;
+	};
+
+	zvb-bus {
+		compatible = "zvb,zvb-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		led0: led@0 {
+			reg = <0>;
+			compatible = "zvb,led";
+		};
+
+		led1: led@1 {
+			reg = <1>;
+			compatible = "zvb,led";
+		};
+
+		led2: led@2 {
+			reg = <2>;
+			compatible = "zvb,led";
+		};
+
+		led3: led@3 {
+			reg = <3>;
+			compatible = "zvb,led";
+		};
+
+		button0: button@4 {
+			reg = <4>;
+			compatible = "zvb,button";
+			zephyr,code = <INPUT_BTN_0>;
+		};
+
+		button1: button@5 {
+			reg = <5>;
+			compatible = "zvb,button";
+			zephyr,code = <INPUT_BTN_1>;
+		};
+
+		button2: button@6 {
+			reg = <6>;
+			compatible = "zvb,button";
+			zephyr,code = <INPUT_BTN_2>;
+		};
+
+		button3: button@7 {
+			reg = <7>;
+			compatible = "zvb,button";
+			zephyr,code = <INPUT_BTN_3>;
+		};
+
+		sensor0: sensor@8 {
+			reg = <8>;
+			compatible = "zvb,sensor";
+			friendly-name = "ZVB Sensor";
+		};
+	};
+};

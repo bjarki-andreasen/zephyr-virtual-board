@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config SENSOR_ZVB_SENSOR
+	bool "ZVB Zephyr Virtual sensor device driver"
+	default y
+	depends on DT_HAS_ZVB_SENSOR_ENABLED
+	select ZVB_BUS
+	select RTIO
+	depends on SENSOR_ASYNC_API
+
+if SENSOR_ZVB_SENSOR
+
+config SENSOR_ZVB_SENSOR_MAX_CHANNELS
+	int "Maximum number of channels to include in a reading"
+	default 8
+
+endif # SENSOR_ZVB_SENSOR

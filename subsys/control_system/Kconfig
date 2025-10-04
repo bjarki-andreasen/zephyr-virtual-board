@@ -1,0 +1,14 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config CONTROL_SYSTEM
+	bool "Control system support"
+
+if CONTROL_SYSTEM
+
+rsource "control/Kconfig"
+rsource "osignal/Kconfig"
+rsource "transfer/Kconfig"
+rsource "Kconfig.shell"
+
+endif # CONTROL_SYSTEM

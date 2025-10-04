@@ -1,0 +1,28 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board Bus Controller
+
+  Transport interface between zephyr host and
+  Zephyr Virtual Board compatible device
+
+  Example:
+
+    zvb {
+            compatible = "zvb,zvb-bus";
+
+            dev0@0 {
+                    reg = <0>;
+                    ...
+            };
+
+            dev0@1 {
+                    reg = <1>;
+                    ...
+            };
+    };
+
+compatible: zvb,zvb-bus
+
+include: zvb-bus-controller.yaml

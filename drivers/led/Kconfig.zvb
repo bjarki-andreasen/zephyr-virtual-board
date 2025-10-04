@@ -1,0 +1,8 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config LED_ZVB
+	bool "ZVB Zephyr Virtual LED device driver"
+	default y
+	depends on DT_HAS_ZVB_LED_ENABLED
+	select ZVB_BUS

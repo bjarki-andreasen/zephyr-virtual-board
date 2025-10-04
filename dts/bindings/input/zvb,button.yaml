@@ -1,0 +1,27 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board Button
+
+  Example:
+
+    zvb {
+            compatible = "zvb,zvb-bus";
+
+            button0: button@0 {
+                    compatible = "zvb,button";
+                    reg = <0>;
+            };
+    };
+
+compatible: zvb,button
+
+include:
+  - zvb-bus-device.yaml
+
+properties:
+  zephyr,code:
+    type: int
+    description: Key code to emit.
+    required: true

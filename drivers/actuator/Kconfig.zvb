@@ -1,0 +1,8 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config ACTUATOR_ZVB
+	bool "ZVB Zephyr Virtual actuator device driver"
+	default y
+	depends on DT_HAS_ZVB_ACTUATOR_ENABLED
+	select ZVB_BUS

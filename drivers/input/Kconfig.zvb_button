@@ -1,0 +1,8 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config INPUT_ZVB_BUTTON
+	bool "ZVB Zephyr Virtual button input device driver"
+	default y
+	depends on DT_HAS_ZVB_BUTTON_ENABLED
+	select ZVB_BUS

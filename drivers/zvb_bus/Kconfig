@@ -1,0 +1,15 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config ZVB_BUS
+	bool "Zephyr Virtual Board bus"
+
+if ZVB_BUS
+
+module = ZVB_BUS
+module-str = zvb_bus
+source "subsys/logging/Kconfig.template.log_config"
+
+rsource "Kconfig.zvb"
+
+endif # ZVB_BUS

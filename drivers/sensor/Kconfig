@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+if SENSOR
+
+rsource "Kconfig.zvb_imu"
+rsource "Kconfig.zvb_sensor"
+
+endif # SENSOR

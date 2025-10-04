@@ -1,0 +1,21 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board actuator
+
+  Example:
+
+    zvb {
+            compatible = "zvb,zvb-bus";
+
+            actuator0: actuator@0 {
+                    compatible = "zvb,actuator";
+                    reg = <0>;
+            };
+    };
+
+compatible: zvb,actuator
+
+include:
+  - zvb-bus-device.yaml

@@ -1,0 +1,17 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Zephyr Virtual Board Bus Device
+
+  Transport interface between zephyr host and
+  Zephyr Virtual Board compatible device.
+
+include: base.yaml
+
+properties:
+  reg:
+    required: true
+    description: Device address on zvb bus
+
+on-bus: zvb-bus

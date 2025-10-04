@@ -1,0 +1,8 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+rsource "actuator/Kconfig"
+rsource "input/Kconfig"
+rsource "led/Kconfig"
+rsource "sensor/Kconfig"
+rsource "zvb_bus/Kconfig"
