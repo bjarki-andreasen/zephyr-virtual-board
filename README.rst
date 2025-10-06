@@ -138,7 +138,7 @@ scene, find **Led0** in the scene tree, press it, then press the **Color**
 in the **Inspector** under **ZVBLed** and change it to your preference.
 
 .. _godot_engine:
-   https://github.com/godotengine/godot
+   https://godotengine.org/
 
 .. _zephyr_rtos_getting_started:
    https://docs.zephyrproject.org/4.2.0/develop/getting_started/index.html
