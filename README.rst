@@ -81,22 +81,33 @@ virtual board project.
 Godot Engine project setup
 ==========================
 
-Download the appropriate executable from
-`Godot Engine Downloads <godot_engine_downloads_>`_. Then clone the
-`Godot Engine ZVB project Git repository <godot_engine_zvb_git_repo_>`_.
-Now, run the Godot Engine executable, navigate to the cloned folder,
-and open the project.
+The 3D models used in the Godot Engine project are created in
+`Blender <blender_org_>`_, which is used to import the models
+into the Godot Engine as well.
+
+* Download and extract `Blender <blender_org_>`_ version 4.5.3 from
+  `Blender Downloads <blender_org_download_>`_.
+* Download and extract `Godot Engine <godot_engine_>`_ version 4.5 from
+  `Godot Engine Downloads <godot_engine_downloads_>`_.
+* Git clone the `Godot Engine ZVB project <godot_engine_zvb_git_repo_>`_
+* Launch the Godot Engine application
+* Press **Import**
+* Navigate to the cloned Godot Engine ZVB project folder
+* Select the **project.godot** and open the project
+* When prompted, provide the path to the Blender application
+
+The Godot Engine project should now be imported and ready to run.
 
 Running the project
 ===================
 
 With the Godot Engine project opened, Navigate to and open the
-**level_1.tscn** scene in the FileSystem window. Then right click on the
-**level_1** tab, and select **Play This Scene**. A window should now open
-with the game scene paused. Now, build and flash the Zephyr-RTOS ZVB blinky
-sample. Now build and "flash" the ZVB blinky sample for the ZVB board. This
-board is an extension of the native_sim board (evident by its target
-identifier)
+**Levels/level_1.tscn** scene in the FileSystem window. Then right click on
+the **level_1** tab, and select **Play This Scene**. A window should now
+open with the game scene paused. Now, build and flash the Zephyr-RTOS ZVB
+blinky sample. Now build and "flash" the ZVB blinky sample for the ZVB board.
+This board is an extension of the native_sim board (evident by its target
+identifier).
 
 ::
 
@@ -130,10 +141,16 @@ in the **Inspector** under **ZVBLed** and change it to your preference.
    https://github.com/godotengine/godot
 
 .. _zephyr_rtos_getting_started:
-   https://docs.zephyrproject.org/latest/develop/getting_started/index.html
+   https://docs.zephyrproject.org/4.2.0/develop/getting_started/index.html
 
 .. _godot_engine_downloads:
-   https://godotengine.org/download/linux/
+   https://godotengine.org/download/archive/4.5-stable/
 
 .. _godot_engine_zvb_git_repo:
    https://github.com/bjarki-andreasen/zephyr-virtual-board-godot
+
+.. _blender_org:
+   https://www.blender.org/
+
+.. _blender_org_download:
+   https://download.blender.org/release/Blender4.5/
