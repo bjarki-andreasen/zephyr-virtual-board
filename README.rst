@@ -101,18 +101,20 @@ The Godot Engine project should now be imported and ready to run.
 Running the project
 ===================
 
-With the Godot Engine project opened, Navigate to and open the
-**Levels/level_1.tscn** scene in the FileSystem window. Then right click on
-the **level_1** tab, and select **Play This Scene**. A window should now
-open with the game scene paused. Now, build and flash the Zephyr-RTOS ZVB
-blinky sample. Now build and "flash" the ZVB blinky sample for the ZVB board.
-This board is an extension of the native_sim board (evident by its target
-identifier).
+* Open the Godot Engine ZVB project
+* Navigate to and open the **Levels/level_1.tscn** scene in the
+  FileSystem window.
+* Then right click on the **level_1** tab
+* Select **Play This Scene**.
 
-::
+A window should now open with the game scene paused.
 
-  west build -p -b native_sim/native/zvb zvb/samples/blinky
-  west flash
+* Build and flash the Zephyr-RTOS ZVB
+
+  ::
+
+    west build -p -b native_sim/native/zvb zvb/samples/blinky
+    west flash
 
 Observe the game scene resume and LED0 blinking.
 
