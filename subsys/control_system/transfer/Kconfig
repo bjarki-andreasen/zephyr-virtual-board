@@ -6,6 +6,7 @@ config CONTROL_SYSTEM_TRANSFER
 
 if CONTROL_SYSTEM_TRANSFER
 
+rsource "Kconfig.integral"
 rsource "Kconfig.linear"
 
 endif # CONTROL_SYSTEM_TRANSFER
