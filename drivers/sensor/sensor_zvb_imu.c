@@ -223,10 +223,7 @@ static int driver_init(const struct device *dev)
 #define DRIVER_INST_DEFINE(inst)								\
 												\
 	static struct driver_data data##inst = {						\
-		.callback = {									\
-			.addr = DT_INST_REG_ADDR(inst),						\
-			.handler = driver_receive_handler,					\
-		},										\
+		.callback = ZVB_BUS_DT_INST_RECEIVE_CALLBACK_INIT(inst, driver_receive_handler),\
 	};											\
 												\
 	static struct driver_config config##inst = {						\

@@ -29,12 +29,16 @@ static struct k_work_delayable driver_ping_dwork;
 
 static inline int driver_socket_send(const uint8_t *data, size_t size)
 {
-	return zsock_sendto(socket_fd,
-			    data,
-			    size,
-			    0,
-			    (struct sockaddr *)&socket_addr,
-			    sizeof(socket_addr));
+	int ret;
+
+	ret = zsock_sendto(socket_fd,
+			   data,
+			   size,
+			   0,
+			   (struct sockaddr *)&socket_addr,
+			   sizeof(socket_addr));
+
+	return ret == size ? 0 : -EIO;
 }
 
 static void driver_ping_dwork_handler(struct k_work *work)
