@@ -3,4 +3,4 @@
 
 config CONTROL_SYSTEM_SHELL
 	bool "Control system shell commands"
-	default y if SHELL
+	depends on SHELL
