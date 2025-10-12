@@ -1,5 +1,5 @@
 # Copyright (c) 2025 Nordic Semiconductor ASA
 # SPDX-License-Identifier: Apache-2.0
 
-config CONTROL_SYSTEM_TRANSFER_LINEAR
+config CONTROL_SYSTEM_TRANSFER_NORMAL
 	bool "Linear control system transfer function support"

@@ -4,20 +4,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <zvb/control_system/transfer/linear.h>
+#include <zvb/control_system/transfer/normal.h>
 #include <zephyr/dsp/dsp.h>
 #include <zephyr/kernel.h>
 #include <zephyr/ztest.h>
 
+CONTROL_SYSTEM_TRANSFER_NORMAL_DEFINE(test_cst);
 
-CONTROL_SYSTEM_TRANSFER_LINEAR_DEFINE(test_cst);
+ZTEST_SUITE(control_system_transfer_normal, NULL, NULL, NULL, NULL, NULL);
 
-ZTEST_SUITE(control_system_transfer_linear, NULL, NULL, NULL, NULL, NULL);
-
-ZTEST(control_system_transfer_linear, test_invalid_configs)
+ZTEST(control_system_transfer_normal, test_invalid_configs)
 {
-	zassert_not_ok(control_system_transfer_linear_configure(&test_cst, 0, 0));
-	zassert_not_ok(control_system_transfer_linear_configure(&test_cst, 1, 0));
+	zassert_not_ok(control_system_transfer_normal_configure(&test_cst, 0, 0));
+	zassert_not_ok(control_system_transfer_normal_configure(&test_cst, 1, 0));
 }
 
 struct test_config {
@@ -78,7 +77,7 @@ static const struct test_config test_configs[] = {
 	},
 };
 
-ZTEST(control_system_transfer_linear, test_linear)
+ZTEST(control_system_transfer_normal, test_normal)
 {
 	int ret;
 	q31_t osig;
@@ -86,7 +85,7 @@ ZTEST(control_system_transfer_linear, test_linear)
 	int64_t expected_osig;
 
 	ARRAY_FOR_EACH_PTR(test_configs, config) {
-		ret = control_system_transfer_linear_configure(&test_cst,
+		ret = control_system_transfer_normal_configure(&test_cst,
 							       config->min_insig,
 							       config->max_insig);
 		zassert_ok(ret);

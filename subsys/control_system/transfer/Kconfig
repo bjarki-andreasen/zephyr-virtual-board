@@ -8,6 +8,6 @@ if CONTROL_SYSTEM_TRANSFER
 
 rsource "Kconfig.differential"
 rsource "Kconfig.integral"
-rsource "Kconfig.linear"
+rsource "Kconfig.normal"
 
 endif # CONTROL_SYSTEM_TRANSFER

@@ -4,29 +4,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <zvb/control_system/transfer/linear.h>
+#include <zvb/control_system/transfer/normal.h>
 #include <zephyr/dsp/dsp.h>
 
-static int transfer_linear_api_transfer(const struct control_system_transfer *cst,
+static int transfer_normal_api_transfer(const struct control_system_transfer *cst,
 					q31_t insig,
 					q31_t *osig)
 {
-	struct control_system_transfer_linear_data *data = cst->data;
+	struct control_system_transfer_normal_data *data = cst->data;
 
 	zdsp_sub_q31(&insig, &data->insig_center, &insig, 1);
 	zdsp_scale_q31(&insig, data->insig_scale_fract, data->insig_scale_shift, osig, 1);
 	return 0;
 }
 
-const struct control_system_transfer_api __control_system_transfer_linear_api = {
-	.transfer = transfer_linear_api_transfer,
+const struct control_system_transfer_api __control_system_transfer_normal_api = {
+	.transfer = transfer_normal_api_transfer,
 };
 
-int control_system_transfer_linear_configure(const struct control_system_transfer *cst,
+int control_system_transfer_normal_configure(const struct control_system_transfer *cst,
 					     q31_t min_insig,
 					     q31_t max_insig)
 {
-	struct control_system_transfer_linear_data *data = cst->data;
+	struct control_system_transfer_normal_data *data = cst->data;
 	int64_t insig_range;
 	int64_t scale_fract;
 
