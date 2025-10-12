@@ -87,13 +87,18 @@ class Parser():
             return -0.0001
         return val
 
+    def _parse_q31_(self, val: int) -> float:
+        return self._limit_(float(val) / 2147483648)
+
+    def _parse_usec_(self, val: int) -> float:
+        return self._limit_(float(val) / 1000000)
+
     def parseline(self, line: str) -> dict:
         content = json.loads(line)
-        # Limit "small" values to avoid python using scientific
-        # notation when printing "small" floating point values.
-        content['sp'] = self._limit_(content['sp'])
-        content['pv'] = self._limit_(content['pv'])
-        content['sa'] = self._limit_(content['sa'])
+        content['sp'] = self._parse_q31_(content['sp'])
+        content['pv'] = self._parse_q31_(content['pv'])
+        content['sa'] = self._parse_q31_(content['sa'])
+        content['ts'] = self._parse_usec_(content['ts'])
         return content
 
 class Logger():

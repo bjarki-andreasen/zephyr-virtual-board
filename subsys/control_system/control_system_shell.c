@@ -19,9 +19,8 @@ static void monitor_print_control_systems(const struct shell *sh)
 	q31_t sample;
 	const char *name;
 	const char *const fmt = "{\"nm\":\"%s\",\"ts\":%" PRIu64
-				".%06" PRIu64 ",\"sp\":%" PRIq(6)
-				",\"pv\":%" PRIq(6) ",\"sa\":%"
-				PRIq(6) "}\n";
+				",\"sp\":%" PRId32 ",\"pv\":%"
+				PRId32 ",\"sa\":%" PRId32 "}\n";
 
 	STRUCT_SECTION_FOREACH(control_system, cs) {
 		uptime_us = k_ticks_to_us_floor64(k_uptime_ticks());
@@ -32,11 +31,10 @@ static void monitor_print_control_systems(const struct shell *sh)
 		shell_fprintf_normal(sh,
 				     fmt,
 				     name,
-				     uptime_us / USEC_PER_SEC,
-				     uptime_us % USEC_PER_SEC,
-				     PRIq_arg(setpoint, 6, 0),
-				     PRIq_arg(process_var, 6, 0),
-				     PRIq_arg(sample, 6, 0));
+				     uptime_us,
+				     setpoint,
+				     process_var,
+				     sample);
 	}
 }
 
