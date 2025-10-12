@@ -34,7 +34,9 @@ int control_system_transfer_normal_configure(const struct control_system_transfe
 		return -EINVAL;
 	}
 
-	insig_range = max_insig - min_insig + 1;
+	insig_range = max_insig;
+	insig_range -= min_insig;
+	insig_range += 1;
 	insig_range >>= 1;
 	scale_fract = INT32_MAX;
 	scale_fract <<= 32;
