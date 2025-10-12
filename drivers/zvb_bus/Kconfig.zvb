@@ -33,7 +33,7 @@ config ZVB_BUS_ZVB_HOST_PORT
 
 config ZVB_BUS_ZVB_THREAD_PRIORITY
 	int "ZVB Zephyr Virtual Bus thread priority"
-	default 10
+	default 5
 
 config ZVB_BUS_ZVB_THREAD_STACK_SIZE
 	int "ZVB Zephyr Virtual Bus thread stack size"

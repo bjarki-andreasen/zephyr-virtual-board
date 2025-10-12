@@ -24,6 +24,7 @@ static uint8_t receive_buf[CONFIG_ZVB_BUS_ZVB_TRANSFER_BUF_SIZE];
 static uint8_t transmit_buf[CONFIG_ZVB_BUS_ZVB_TRANSFER_BUF_SIZE];
 static uint32_t tick;
 static int socket_fd;
+static int64_t ping_uptime_ms;
 static struct sockaddr_in socket_addr;
 static struct k_work_delayable driver_ping_dwork;
 
@@ -48,6 +49,7 @@ static void driver_ping_dwork_handler(struct k_work *work)
 	data[0] = DRIVER_PING_ADDRESS;
 	sys_put_le32(tick, &data[1]);
 	tick++;
+	ping_uptime_ms = k_uptime_get();
 	driver_socket_send(data, sizeof(data));
 	k_work_schedule(&driver_ping_dwork, K_MSEC(CONFIG_ZVB_BUS_ZVB_PING_INTERVAL_MS));
 }
@@ -127,6 +129,11 @@ static void handle_received_data(const uint8_t *data, size_t size)
 
 	LOG_DBG("Received packet: addr: %u", msg_addr);
 	LOG_HEXDUMP_DBG(msg, msg_size, "data: ");
+
+	if (msg_addr == DRIVER_PING_ADDRESS) {
+		LOG_INF("Pong: latency: %llims", k_uptime_get() - ping_uptime_ms);
+		return;
+	}
 
 	k_sem_take(&receive_sem, K_FOREVER);
 	SYS_SLIST_FOR_EACH_CONTAINER(&callbacks, callback, node) {
