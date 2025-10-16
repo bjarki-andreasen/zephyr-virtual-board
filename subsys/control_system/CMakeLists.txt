@@ -4,6 +4,7 @@
 zephyr_library()
 
 add_subdirectory_ifdef(CONFIG_CONTROL_SYSTEM_CONTROL control)
+add_subdirectory_ifdef(CONFIG_CONTROL_SYSTEM_SIGNAL signal)
 add_subdirectory_ifdef(CONFIG_CONTROL_SYSTEM_TRANSFER transfer)
 
 zephyr_library_sources_ifdef(CONFIG_CONTROL_SYSTEM_SHELL control_system_shell.c)
