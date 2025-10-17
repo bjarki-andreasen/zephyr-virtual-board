@@ -6,6 +6,7 @@ config ACTUATOR
 
 if ACTUATOR
 
+rsource "Kconfig.servo_pwm"
 rsource "Kconfig.zvb"
 
 endif # ACTUATOR
