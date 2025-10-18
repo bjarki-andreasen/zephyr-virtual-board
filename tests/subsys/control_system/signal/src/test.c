@@ -11,16 +11,16 @@
 
 static struct control_system_signal_osignal test_osignal;
 
-ZTEST_SUITE(control_system_signal_osignal, NULL, NULL, NULL, NULL, NULL);
+ZTEST_SUITE(control_system_signal, NULL, NULL, NULL, NULL, NULL);
 
-struct test_config {
+struct test_osignal_config {
 	int64_t min_osig;
 	int64_t max_osig;
 	int64_t threshold;
 	int64_t osigs[5];
 };
 
-static const q31_t test_insigs[] = {
+static const q31_t test_osignal_insigs[] = {
 	INT32_MIN,
 	INT32_MIN / 2,
 	0,
@@ -28,7 +28,7 @@ static const q31_t test_insigs[] = {
 	INT32_MAX,
 };
 
-static const struct test_config test_configs[] = {
+static const struct test_osignal_config test_osignal_configs[] = {
 	{
 		.min_osig = 500,
 		.max_osig = 1500,
@@ -55,18 +55,18 @@ static const struct test_config test_configs[] = {
 	},
 };
 
-ZTEST(control_system_signal_osignal, test_osignal)
+ZTEST(control_system_signal, test_osignal)
 {
 	int64_t osig;
 
-	ARRAY_FOR_EACH_PTR(test_configs, config) {
+	ARRAY_FOR_EACH_PTR(test_osignal_configs, config) {
 		control_system_signal_osignal_configure(&test_osignal,
 							config->min_osig,
 							config->max_osig);
 
-		ARRAY_FOR_EACH(test_insigs, i) {
+		ARRAY_FOR_EACH(test_osignal_insigs, i) {
 			control_system_signal_osignal_sample(&test_osignal,
-							     test_insigs[i],
+							     test_osignal_insigs[i],
 							     &osig);
 
 			if (osig <= INT64_MIN + config->threshold) {
