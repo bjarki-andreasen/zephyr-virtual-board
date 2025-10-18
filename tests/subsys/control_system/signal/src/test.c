@@ -10,8 +10,6 @@
 #include <zephyr/kernel.h>
 #include <zephyr/ztest.h>
 
-static struct control_system_signal_osignal test_osignal;
-
 ZTEST_SUITE(control_system_signal, NULL, NULL, NULL, NULL, NULL);
 
 struct test_osignal_config {
@@ -28,6 +26,8 @@ static const q31_t test_osignal_insigs[] = {
 	INT32_MAX / 2,
 	INT32_MAX,
 };
+
+static struct control_system_signal_osignal test_osignal;
 
 static const struct test_osignal_config test_osignal_configs[] = {
 	{
@@ -56,6 +56,17 @@ static const struct test_osignal_config test_osignal_configs[] = {
 	},
 };
 
+static void test_assert_within_int64(int64_t a, int64_t b, int64_t d)
+{
+	if (a <= INT64_MIN + d) {
+		zassert_between_inclusive(a, INT64_MIN, b + d);
+	} else if (a >= INT64_MAX - d) {
+		zassert_between_inclusive(a, b - d, INT64_MAX);
+	} else {
+		zassert_within(a, b, d);
+	}
+}
+
 ZTEST(control_system_signal, test_osignal)
 {
 	int64_t osig;
@@ -70,17 +81,7 @@ ZTEST(control_system_signal, test_osignal)
 							     test_osignal_insigs[i],
 							     &osig);
 
-			if (osig <= INT64_MIN + config->threshold) {
-				zassert_between_inclusive(osig,
-							  config->osigs[i],
-							  config->osigs[i] + config->threshold);
-			} else if (osig >= INT64_MAX - config->threshold) {
-				zassert_between_inclusive(osig,
-							  config->osigs[i] - config->threshold,
-							  config->osigs[i]);
-			} else {
-				zassert_within(osig, config->osigs[i], config->threshold);
-			}
+			test_assert_within_int64(osig, config->osigs[i], config->threshold);
 		}
 	}
 }
