@@ -1,0 +1,36 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  DFRobot DRI0042 15A single DC Motor Driver
+
+  Control signal table:
+
+    IN1 IN2
+    0   0   Stop
+    1   1
+    1   0   Forward
+    0   1   Backward
+
+  Minimum pulse width: 200 ns
+
+include:
+  - actuator-device.yaml
+
+compatible: dfrobot,dri0042
+
+properties:
+  pwms:
+    type: phandle-array
+    required: true
+    description: PWM Speed control signal
+
+  in1-gpios:
+    type: phandle-array
+    required: true
+    description: IN1 Motor steering control signal 1
+
+  in2-gpios:
+    type: phandle-array
+    required: true
+    description: IN2 Motor steering control signal 2
