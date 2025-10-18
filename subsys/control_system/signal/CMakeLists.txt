@@ -3,4 +3,5 @@
 
 zephyr_library()
 
+zephyr_library_sources(insignal.c)
 zephyr_library_sources(osignal.c)
