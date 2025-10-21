@@ -5,36 +5,21 @@
  */
 
 #include <zvb/control_system/control_system.h>
+#include <zvb/control_system/variable.h>
 #include <zephyr/dsp/dsp.h>
 #include <zephyr/shell/shell.h>
 #include <zephyr/kernel.h>
 
 static bool monitor_enabled;
 
-static void monitor_print_control_systems(const struct shell *sh)
+static void monitor_print_control_system_variables(const struct shell *sh)
 {
-	int64_t uptime_us;
-	q31_t setpoint;
-	q31_t process_var;
-	q31_t sample;
-	const char *name;
-	const char *const fmt = "{\"nm\":\"%s\",\"ts\":%" PRIu64
-				",\"sp\":%" PRId32 ",\"pv\":%"
-				PRId32 ",\"sa\":%" PRId32 "}\n";
-
-	STRUCT_SECTION_FOREACH(control_system, cs) {
-		uptime_us = k_ticks_to_us_floor64(k_uptime_ticks());
-		control_system_get_setpoint(cs, &setpoint);
-		control_system_get_process_var(cs, &process_var);
-		control_system_get_sample(cs, &sample);
-		name = control_system_get_name(cs);
+	STRUCT_SECTION_FOREACH(control_system_variable, var) {
 		shell_fprintf_normal(sh,
-				     fmt,
-				     name,
-				     uptime_us,
-				     setpoint,
-				     process_var,
-				     sample);
+				     "[\"%s\",%" PRIu64 ",%" PRId32 "]\n",
+				     control_system_variable_name_get(var),
+				     k_ticks_to_us_floor64(k_uptime_ticks()),
+				     control_system_variable_get(var));
 	}
 }
 
@@ -56,8 +41,8 @@ static int cmd_list(const struct shell *sh, size_t argc, char **argv)
 	ARG_UNUSED(argc);
 	ARG_UNUSED(argv);
 
-	STRUCT_SECTION_FOREACH(control_system, cs) {
-		shell_print(sh, "%s", control_system_get_name(cs));
+	STRUCT_SECTION_FOREACH(control_system_variable, var) {
+		shell_print(sh, "%s", control_system_variable_name_get(var));
 	}
 
 	return 0;
@@ -78,7 +63,7 @@ static int cmd_monitor(const struct shell *sh, size_t argc, char **argv)
 	shell_set_bypass(sh, monitor_bypass_callback);
 	monitor_enabled = true;
 	while (monitor_enabled) {
-		monitor_print_control_systems(sh);
+		monitor_print_control_system_variables(sh);
 		shell_process(sh);
 		k_usleep(interval_us);
 	}

@@ -3,18 +3,17 @@
 # Copyright (c) 2025 Nordic Semiconductor ASA
 # SPDX-License-Identifier: Apache-2.0
 
-# This script uses the control_system monitor shell command to get the
-# control system variables of all control systems on the device, and
-# visualize these variables for all, or a subset of, the control
-# systems on live graphs. The script additionally can log the output
-# to a simple json file, which can be used for further scripting,
-# and can read and visualized by this script.
+# This script uses the control_system monitor shell command to get all
+# control system variable values and visualize these variables on a live
+# graph. The script additionally can log the output to a simple json file,
+# which can be used for further scripting, and can read and visualized by
+# this script.
 #
-# To visualize all control systems, the following command can be used.
+# To visualize all control system variables, the following command can be used.
 #
 #     ./control_system.py --serial-port /dev/pts/2 --baudrate 115200
 #
-# To log the control systems, specify an output path for the logfile:
+# To log the control system variables, specify an output path for the logfile:
 #
 #     ./control_system.py --serial-port /dev/pts/2 --baudrate 115200 \
 #     --logfile log.json
@@ -24,11 +23,11 @@
 #
 #     ./control_system.py --logfile log.json
 #
-# To only visualize and log a subset of the control systems present on
-# the device, specify them by name with the --control-system option:
+# To only visualize and log a subset of the control systems variables present
+# on the device, specify them by name with the --variable option:
 #
 #     ./control_system.py --serial-port /dev/pts/2 --logfile loj.json \
-#     --control-system foo --control-system bar
+#     --variable foo_var --variable bar_var
 #
 # The samplerate and samplelimit can be adjusted with the --samplerate
 # and --samplelimit options. Take care not to set too high a samplerate
@@ -95,11 +94,11 @@ class Parser():
 
     def parseline(self, line: str) -> dict:
         content = json.loads(line)
-        content['sp'] = self._parse_q31_(content['sp'])
-        content['pv'] = self._parse_q31_(content['pv'])
-        content['sa'] = self._parse_q31_(content['sa'])
-        content['ts'] = self._parse_usec_(content['ts'])
-        return content
+        return {
+            "name": content[0],
+            "timestamp": self._parse_usec_(content[1]),
+            "value": self._parse_q31_(content[2])
+        }
 
 class Logger():
     def __init__(self, logfile: str | None, samplelimit: int=None, whitelist: list[str]=None):
@@ -121,8 +120,8 @@ class Logger():
 
         # We preprocess each sample when it is added to the logger,
         # splitting it into arrays which are directly usable by pyplot,
-        # sorted by control system name.
-        self.control_systems = {}
+        # sorted by control system variable name.
+        self.variables = {}
         self._samplelimit = samplelimit
         self._whitelist = whitelist
 
@@ -134,32 +133,26 @@ class Logger():
             self._file.write('\n\t]\n}\n')
 
     def log(self, sample: dict):
-        if self._whitelist and sample['nm'] not in self._whitelist:
+        if self._whitelist and sample['name'] not in self._whitelist:
             return
 
         if self._file:
             self._file.write(f'\t\t{json.dumps(sample)},\n')
 
-        if sample['nm'] not in self.control_systems:
-            self.control_systems[sample['nm']] = {
-                'ts': [],
-                'sp': [],
-                'pv': [],
-                'sa': [],
+        if sample['name'] not in self.variables:
+            self.variables[sample['name']] = {
+                'timestamps': [],
+                'values': [],
             }
 
-        self.control_systems[sample['nm']]['ts'].append(sample['ts'])
-        self.control_systems[sample['nm']]['sp'].append(sample['sp'])
-        self.control_systems[sample['nm']]['pv'].append(sample['pv'])
-        self.control_systems[sample['nm']]['sa'].append(sample['sa'])
+        self.variables[sample['name']]['timestamps'].append(sample['timestamp'])
+        self.variables[sample['name']]['values'].append(sample['value'])
 
         if self._samplelimit:
-            for nm in self.control_systems:
-                if len(self.control_systems[nm]['ts']) > self._samplelimit:
-                    self.control_systems[nm]['ts'] = self.control_systems[nm]['ts'][1:]
-                    self.control_systems[nm]['sp'] = self.control_systems[nm]['sp'][1:]
-                    self.control_systems[nm]['pv'] = self.control_systems[nm]['pv'][1:]
-                    self.control_systems[nm]['sa'] = self.control_systems[nm]['sa'][1:]
+            for name in self.variables:
+                if len(self.variables[name]['timestamps']) > self._samplelimit:
+                    self.variables[name]['timestamps'] = self.variables[name]['timestamps'][1:]
+                    self.variables[name]['values'] = self.variables[name]['values'][1:]
 
 class Log():
     def __init__(self, logfile: str):
@@ -173,29 +166,28 @@ class Log():
 class Viewer():
     def __init__(self):
         self._graphs = []
-        self._colors = {'sp': 'g', 'pv': 'b', 'sa': 'r'}
+        self._colors = ['red', 'blue', 'orange', 'green', 'purple', 'black']
 
     def _remove_plots_(self):
         for graph in self._graphs:
             graph.remove()
         self._graphs = []
 
-    def _add_plot_(self, nm: str, cs: dict):
-        plt.title(nm + ' (green = sp, blue = pv, red = sa)')
-        plt.xlabel("")
+    def _add_plots_(self, logger):
         plt.ylim(-1.1, 1.1)
-        if cs['ts'][0] < cs['ts'][-1]:
-            plt.xlim(cs['ts'][0], cs['ts'][-1])
-        self._graphs.append(plt.plot(cs['ts'], cs['sp'], color = self._colors['sp'])[0])
-        self._graphs.append(plt.plot(cs['ts'], cs['pv'], color = self._colors['pv'])[0])
-        self._graphs.append(plt.plot(cs['ts'], cs['sa'], color = self._colors['sa'])[0])
+        plt.xlabel("seconds")
+        titles = []
+        for i, name in enumerate(logger.variables):
+            timestamps = logger.variables[name]['timestamps']
+            values = logger.variables[name]['values']
+            color = self._colors[i]
+            titles.append(f'{color}: {name}')
+            self._graphs.append(plt.plot(timestamps, values, color = color)[0])
+        plt.title(', '.join(titles))
 
     def _prepare_view_(self, logger):
         self._remove_plots_()
-        for i, nm in enumerate(logger.control_systems):
-            plt.subplot(len(logger.control_systems), 1, i + 1)
-            self._add_plot_(nm, logger.control_systems[nm])
-        plt.xlabel("seconds")
+        self._add_plots_(logger)
 
     def run(self, logger, interval: float):
         plt.ion()
@@ -226,8 +218,8 @@ def parse_args():
                         help="path to json formatted log file")
     parser.add_argument("--samplelimit", type=int, default=500,
                         help="maximum number of samples displayed in viewer")
-    parser.add_argument("--control-system", action='append',
-                        help="Specifies subset of control systems to include")
+    parser.add_argument("--variable", action='append',
+                        help="Specifies subset of control system variables to include")
     return parser.parse_args()
 
 def main():
@@ -246,7 +238,7 @@ def main():
         backend.flush()
         parser = Parser()
         viewer = Viewer()
-        logger = Logger(args.logfile, args.samplelimit, args.control_system)
+        logger = Logger(args.logfile, args.samplelimit, args.variable)
         try:
             while True:
                 lines = backend.readlines(0.05)
@@ -256,7 +248,7 @@ def main():
                     except:
                         continue
                     logger.log(sample)
-                if len(logger.control_systems):
+                if len(logger.variables):
                     viewer.run(logger, 0.05)
                     if not viewer.is_open():
                         break
