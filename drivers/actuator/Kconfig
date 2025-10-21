@@ -8,6 +8,7 @@ if ACTUATOR
 
 rsource "Kconfig.dri0042"
 rsource "Kconfig.servo_pwm"
+rsource "Kconfig.shell"
 rsource "Kconfig.zvb"
 
 endif # ACTUATOR
