@@ -62,7 +62,7 @@ static int driver_init(const struct device *dev)
 	static struct driver_config config##inst = {						\
 		.pwm_spec = PWM_DT_SPEC_INST_GET(inst),						\
 		.pulse_min_ns = DT_INST_PROP(inst, pulse_min_ns),				\
-		.pulse_min_ns = DT_INST_PROP(inst, pulse_max_ns),				\
+		.pulse_max_ns = DT_INST_PROP(inst, pulse_max_ns),				\
 	};											\
 												\
 	DEVICE_DT_INST_DEFINE(									\
