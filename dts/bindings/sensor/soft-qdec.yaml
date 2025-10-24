@@ -1,0 +1,31 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Software QDEC peripheral
+
+  Example:
+
+    / {
+
+            qdec0: qdec0 {
+                    compatible = "soft-qdec";
+                    ipc = &ipc;
+            };
+    };
+
+compatible: soft-qdec
+
+include:
+  - sensor-device.yaml
+
+properties:
+  ipc:
+    type: phandle
+    description: IPC instance
+    required: true
+
+  steps-per-rotation:
+    type: int
+    description: Steps per full rotation
+    required: true

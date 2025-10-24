@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config SENSOR_FLPR_QDEC
+	bool "FLPR software QDEC device driver"
+	default y
+	depends on DT_HAS_FLPR_QDEC_ENABLED
+	depends on IPC_SERVICE
+	depends on SENSOR_ASYNC_API

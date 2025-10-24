@@ -3,6 +3,7 @@
 
 if SENSOR
 
+rsource "Kconfig.soft_qdec"
 rsource "Kconfig.zvb_imu"
 rsource "Kconfig.zvb_sensor"
 
