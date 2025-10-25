@@ -177,13 +177,18 @@ class Viewer():
         plt.ylim(-1.1, 1.1)
         plt.xlabel("seconds")
         titles = []
+        xlim_min = 0xFFFFFFFF
+        xlim_max = 0
         for i, name in enumerate(logger.variables):
             timestamps = logger.variables[name]['timestamps']
+            xlim_min = min(xlim_min, min(timestamps))
+            xlim_max = max(xlim_max, max(timestamps))
             values = logger.variables[name]['values']
             color = self._colors[i]
             titles.append(f'{color}: {name}')
             self._graphs.append(plt.plot(timestamps, values, color = color)[0])
         plt.title(', '.join(titles))
+        plt.xlim(xlim_min, xlim_max)
 
     def _prepare_view_(self, logger):
         self._remove_plots_()
